@@ -1,0 +1,83 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "groupId": { "type": "string", "description": "The class or organization ID" },
+        "role": { "type": "string", "enum": ["member", "admin", "secretary"] },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "notificationLeadTime": { "type": "number", "description": "Minutes before deadline" },
+            "ringtone": { "type": "string" },
+            "vibration": { "type": "boolean" }
+          }
+        }
+      },
+      "required": ["uid", "displayName"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A shared task for a group",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "deadline": { "type": "string", "format": "date-time" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+        "createdBy": { "type": "string" },
+        "createdByName": { "type": "string" },
+        "groupId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "completedBy": { "type": "array", "items": { "type": "string" }, "description": "List of user UIDs who completed this task locally" }
+      },
+      "required": ["title", "deadline", "priority", "groupId"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Group chat message",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderPhoto": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "groupId": { "type": "string" }
+      }
+    },
+    "Group": {
+      "title": "Group",
+      "description": "A class or organization group",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "ownerUid": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Users"
+    },
+    "/groups/{groupId}": {
+      "schema": "Group",
+      "description": "Groups/Classes"
+    },
+    "/groups/{groupId}/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Tasks within a group"
+    },
+    "/groups/{groupId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages within a group"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Basic helpers
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    
+    // User data derived membership check
+    function isMember(groupId) {
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.groupId == groupId;
+    }
+
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(userId);
+    }
+
+    // Groups collection
+    match /groups/{groupId} {
+      allow get: if isSignedIn();
+      allow create: if isSignedIn();
+
+      // Tasks subcollection
+      match /tasks/{taskId} {
+        allow list: if isMember(groupId);
+        allow get: if isMember(groupId);
+        
+        allow create: if isMember(groupId) 
+          && request.resource.data.groupId == groupId
+          && request.resource.data.createdBy == request.auth.uid;
+          
+        allow update: if isMember(groupId) && (
+          // Case 1: Toggle completion (any member)
+          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['completedBy'])) ||
+          // Case 2: Edit task (only creator)
+          (resource.data.createdBy == request.auth.uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title', 'deadline', 'priority']))
+        ) && request.resource.data.groupId == groupId;
+
+        allow delete: if isMember(groupId) && resource.data.createdBy == request.auth.uid;
+      }
+
+      // Messages subcollection
+      match /messages/{messageId} {
+        allow list: if isMember(groupId);
+        allow get: if isMember(groupId);
+        
+        allow create: if isMember(groupId) 
+          && request.resource.data.groupId == groupId
+          && request.resource.data.senderId == request.auth.uid;
+
+        allow update: if isMember(groupId) 
+          && resource.data.senderId == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['text', 'editedAt']);
+
+        allow delete: if isMember(groupId) 
+          && resource.data.senderId == request.auth.uid;
+      }
+    }
+  }
+}

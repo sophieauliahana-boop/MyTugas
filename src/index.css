@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Quicksand", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand-pink: #FFB5D7;
+  --color-brand-blue: #A0D8EF;
+  --color-brand-mint: #C1E1C1;
+  --color-brand-yellow: #FFF9C4;
+  --color-vanilla: #FDFCF0;
+  --color-dark-bg: #1a1a1a;
+  --color-dark-text: #f0f0f0;
+  --color-dark-card: #242424;
+  --color-dark-border: #333333;
+}
+
+@layer base {
+  body {
+    @apply bg-vanilla text-zinc-800 font-sans transition-colors duration-500;
+  }
+  
+  .dark body {
+    @apply bg-dark-bg text-dark-text;
+  }
+}
+
+.glass {
+  @apply backdrop-blur-md bg-white/60 border border-white/20 transition-all;
+}
+
+.dark .glass {
+  @apply bg-black/60 border-white/10;
+}
+
+.card-cute {
+  @apply bg-white rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-zinc-100/50 transition-all;
+}
+
+.dark .card-cute {
+  @apply bg-[var(--color-dark-card)] border-[var(--color-dark-border)] shadow-[0_8px_30px_rgb(0,0,0,0.2)];
+}
+
+.btn-cute {
+  @apply rounded-2xl font-bold transition-all active:scale-95 shadow-sm;
+}

@@ -1,0 +1,81 @@
+/* Calendar Custom Styling */
+.react-calendar.mytugas-calendar {
+  width: 100% !important;
+  border: none !important;
+  font-family: inherit !important;
+  background: transparent !important;
+}
+
+.mytugas-calendar .react-calendar__navigation {
+  margin-bottom: 24px !important;
+}
+
+.mytugas-calendar .react-calendar__navigation button {
+  min-width: 44px !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  color: #333 !important;
+  border-radius: 12px !important;
+}
+
+.dark .mytugas-calendar .react-calendar__navigation button {
+  color: #eee !important;
+}
+
+.mytugas-calendar .react-calendar__navigation button:enabled:hover,
+.mytugas-calendar .react-calendar__navigation button:enabled:focus {
+  background-color: #f0f0f0 !important;
+}
+
+.dark .mytugas-calendar .react-calendar__navigation button:enabled:hover {
+  background-color: #333 !important;
+}
+
+.mytugas-calendar .react-calendar__month-view__weekdays {
+  color: #999 !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+}
+
+.mytugas-calendar .react-calendar__tile {
+  padding: 18px 6px !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  color: #555 !important;
+  transition: all 0.2s ease !important;
+}
+
+.dark .mytugas-calendar .react-calendar__tile {
+  color: #bbb !important;
+}
+
+.mytugas-calendar .react-calendar__tile--now {
+  background: #FFF9C4 !important;
+  color: #887a00 !important;
+}
+
+.dark .mytugas-calendar .react-calendar__tile--now {
+  background: #444000 !important;
+  color: #fffac4 !important;
+}
+
+.mytugas-calendar .react-calendar__tile--active {
+  background: #FFB5D7 !important;
+  color: white !important;
+  box-shadow: 0 8px 15px rgba(255, 181, 215, 0.4) !important;
+}
+
+.mytugas-calendar .react-calendar__tile:enabled:hover,
+.mytugas-calendar .react-calendar__tile:enabled:focus {
+  background-color: #f8f8f8 !important;
+}
+
+.dark .mytugas-calendar .react-calendar__tile:enabled:hover {
+  background-color: #2a2a2a !important;
+}
+
+.mytugas-calendar .react-calendar__month-view__days__day--neighboringMonth {
+  opacity: 0.3 !important;
+}
